@@ -1,0 +1,28 @@
+name: Telegram Monetag campaign
+
+on:
+  schedule:
+    - cron: "30 2 * * *"   # 8:00 AM IST
+    - cron: "30 6 * * *"   # 12:00 PM IST
+    - cron: "30 10 * * *"  # 4:00 PM IST
+    - cron: "30 14 * * *"  # 8:00 PM IST
+    - cron: "30 18 * * *"  # 12:00 AM IST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Publish Telegram post
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python campaign.py
